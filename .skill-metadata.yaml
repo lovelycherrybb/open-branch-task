@@ -1,0 +1,73 @@
+examples:
+  - id: cut-from-current-thread
+    title:
+      zh: 从当前对话切一条支线
+      en: Cut a branch from the current thread
+    description:
+      zh: 主线聊到一半冒出的支线，直接用当前对话上下文生成交接文件和提示词
+      en: A branch surfaced mid-conversation; use current context to build the handoff file and prompt
+    prompt:
+      zh: |-
+        用 open-branch-task 把刚才聊到的 {{支线主题，比如"预览端点 MIME 白名单要重新评估"}} 切出去做。
+
+        按 skill 的三步走：
+        1. 从当前对话抽取六栏（支线目标 / 已经到哪了 / 已排除 / 相关文件 / 完成判定 / 回主线时怎么交回）
+        2. 探测当前仓库的落点规范，把候选路径列给我选，别擅自落文件
+        3. 我选定路径后，写交接 md，再把可以直接复制去新任务对话框的提示词原样贴给我
+      en: |-
+        Use open-branch-task to cut the {{branch topic, e.g. "re-evaluate preview MIME whitelist"}} we just discussed into a separate task.
+
+        Follow the skill's three steps:
+        1. Extract the six fields from current context (goal / progress / ruled-out / related files / definition of done / how to merge back)
+        2. Probe the current repo's convention and offer me candidate paths — do not write without my pick
+        3. After I pick, write the handoff md and return the copy-paste prompt for a new chat
+
+  - id: describe-branch-inline
+    title:
+      zh: 支线是新起的话头，直接说清
+      en: Describe a fresh branch inline
+    description:
+      zh: 支线不在刚才的对话里，用户在指令里一次性交代清楚
+      en: The branch isn't part of recent context; the user describes it in the command itself
+    prompt:
+      zh: |-
+        开一条支线，信息如下：
+
+        支线是什么：{{一句话目标}}
+        已经到哪了：{{如果还没开始就写"未开始"}}
+        已排除：{{暂时想写的排除项，或者"无"}}
+        相关文件：{{涉及的仓库/文件绝对路径}}
+        完成判定：{{怎么算交完差}}
+
+        用 open-branch-task 落交接文件并把新对话框开场提示词返回给我。落点先按仓库规范探测，探测不出来的话给我候选路径让我挑。
+      en: |-
+        Cut a new branch with these details:
+
+        What it is: {{one-line goal}}
+        Progress so far: {{write "not started" if fresh}}
+        Ruled out: {{anything already rejected, or "none"}}
+        Related files: {{absolute paths of repos/files}}
+        Definition of done: {{how to verify closure}}
+
+        Use open-branch-task to write the handoff file and return the new-chat prompt. Probe repo conventions for the location; if unclear, offer candidates before writing.
+
+  - id: merge-back-from-branch
+    title:
+      zh: 支线做完，结论合回主线
+      en: Merge branch conclusions back to main line
+    description:
+      zh: 支线对话框里已经写完"完成情况"栏，回主线读取并摘要合并
+      en: The branch chat has updated the "完成情况" section; read it back into the main line
+    prompt:
+      zh: |-
+        去看 `{{交接文件的绝对路径}}` 的"完成情况"栏，把关键结论摘要给我，不要全文倾倒。
+
+        摘要完问我两件事：
+        1. 这条支线是否可以标记"已完成"并按仓库规范归档（比如移到 done/ 或 archive/）
+        2. 结论里是否有需要长期沉淀到 memory 的，如果有单独列出来让我确认，不要直接写 memory
+      en: |-
+        Read the "完成情况" (progress / done) section of `{{absolute path to handoff file}}` and give me a concise summary, not a full dump.
+
+        After the summary, ask me two things:
+        1. Can we mark this branch as done and archive it following repo convention (e.g. move under done/ or archive/)
+        2. Anything worth persisting to long-term memory — list it separately for my confirmation, do not write memory automatically

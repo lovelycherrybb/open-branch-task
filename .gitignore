@@ -1,0 +1,13 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Local scratch (this repo shouldn't have any, but keep guardrails)
+.local/
+*.local.md
