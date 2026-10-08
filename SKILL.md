@@ -125,7 +125,7 @@ agent 应该：
 - **落点必须让用户确认**。宁可多问一句，不要在没探测仓库规范前就 Write 文件。
 - **不擅自造词**。所有字段名、栏名、动作名沿用用户既有说法：主线、支线、切、交接、handoff、完成情况、已排除、完成判定。
 - **一次只切一条支线**。用户如果同时提了两条，先问哪条先切，不要合并写成一个文件。
-- **不污染 memory**。交接文件写在项目/仓库里，不写进 `~/.qwenworkcn/awareness/` 下的 MEMORY.md / USER.md / memory/*.md。
+- **不污染所在 agent 平台的全局长期记忆**（如 QoderWork 的 `~/.qwenworkcn/awareness/` 下 MEMORY.md / USER.md / memory/*.md、Claude Code 的 `~/.claude/CLAUDE.md` 与 Projects memory、其他 agent 的等价机制）。交接文件是项目产物，写在项目/仓库里。
 - **提示词里的路径必须是绝对路径**。用户复制到新对话框时，相对路径没有上下文会读不到。
 - **主线不中断**。切完支线立刻把注意力交回主线，不要留在支线细节里继续讨论。
 
